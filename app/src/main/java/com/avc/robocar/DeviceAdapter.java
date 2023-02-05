@@ -1,6 +1,7 @@
 package com.avc.robocar;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.pm.PackageManager;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.*;
@@ -22,11 +23,12 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.ViewHolder
 		devices = d;
 	}
 
+	@SuppressLint("MissingPermission")
 	@Override
 	public void onBindViewHolder(DeviceAdapter.ViewHolder p1, int p2) {
 		// TODO: Implement this method
 
-		p1.text.setText(devices.get(p2).getName());
+		p1.text.setText(devices.get(p2).getName()+"("+devices.get(p2).getAddress()+")");
 
 	}
 

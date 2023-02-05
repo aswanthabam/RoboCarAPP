@@ -23,7 +23,7 @@ public class Bluetooth
 	private BluetoothSocket socket;
 	public boolean IS_CONNECTED = false;
 	public String CONNECTED_DEVICE = null;
-	
+
 	Bluetooth(AppCompatActivity a){
 		activity = a;
 		BluetoothManager bluetoothManager = a.getSystemService(BluetoothManager.class);
@@ -33,7 +33,7 @@ public class Bluetooth
 			Toast.makeText(a,"This.device doesnt support Bluetooth", Toast.LENGTH_SHORT).show();
 		}
 		//ba = BluetoothAdapter.getDefaultAdapter();
-		
+
 		// Register for broadcasts when a device is discovered.
 		IntentFilter filter = new IntentFilter();
 		filter.addAction(BluetoothDevice.ACTION_FOUND);
@@ -56,7 +56,7 @@ public class Bluetooth
 			return false;
 		}
 	}
-	
+
 	@SuppressLint("MissingPermission")
 	public void on(){
 		if (!ba.isEnabled()) {
@@ -67,13 +67,13 @@ public class Bluetooth
 			Toast.makeText(activity.getApplicationContext(), "Already on", Toast.LENGTH_LONG).show();
 		}
 	}
-	
+
 	@SuppressLint("MissingPermission")
 	public void off(){
 		ba.disable();
 		Toast.makeText(activity,"Bluetooth turned off",Toast.LENGTH_LONG).show();
 	}
-	
+
 	@SuppressLint("MissingPermission")
 	public  void visible(){
 		Intent getVisible = new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
@@ -94,13 +94,13 @@ public class Bluetooth
 
 	@SuppressLint("MissingPermission")
 	public Set<BluetoothDevice> list(){
-		
+
 		pairedDevices = ba.getBondedDevices();
-		
+
 		for(BluetoothDevice bt : pairedDevices) devices.add(bt.getName());
-		
+
 		// Toast.makeText(activity.getApplicationContext(), "Showing Paired Devices",Toast.LENGTH_SHORT).show();
-		
+
 		return pairedDevices;
 	}
 
@@ -146,19 +146,27 @@ public class Bluetooth
 		void onTurningON();
 		void onTurningOFF();
 	}
+	@SuppressLint("MissingPermission")
 	public void connect(final BluetoothDevice device){
-		Toast.makeText(activity,"Connecting ....",2000).show();
+		Toast.makeText(activity,"Connecting ....", Toast.LENGTH_SHORT).show();
+		ba.cancelDiscovery();
+		try{
+			UUID uuid = device.getUuids()[0].getUuid();
+			socket = device.createInsecureRfcommSocketToServiceRecord(uuid);
+			Log.i("BLUETOOTH_SOCKET","Socket Creaetd");
+		}catch(IOException e) {
+			Log.e("BLUETOOTH_SOCKET","Error creating socket  :"+e);
+			Toast.makeText(activity,"Error creating socket",Toast.LENGTH_SHORT).show();
+		}
 		new Thread(){
-			@SuppressLint("MissingPermission")
 			public void run(){
 				try{
-					socket = device.createInsecureRfcommSocketToServiceRecord(UUID.fromString(UUID_String));
-					ba.cancelDiscovery();
 					socket.connect();
 					IS_CONNECTED = true;
 					CONNECTED_DEVICE = device.getAddress();
 					MainActivity.toast(activity,"Connected to "+device.getName());
 				}catch(IOException e){
+					Log.e("BLUETOOTH_ERROR","Error connecting. caused because of : "+e);
 					e.printStackTrace();
 					MainActivity.toast(activity,"Unable to connect ");
 				}
