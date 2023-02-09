@@ -44,7 +44,7 @@ public class Bluetooth
 		return ba;
 	}
 	public boolean send(String data){
-		Toast.makeText(activity, "Sending : "+data,Toast.LENGTH_LONG).show();
+		Toast.makeText(activity, "Sending : "+data,Toast.LENGTH_SHORT).show();
 		if(!IS_CONNECTED) return false;
 		try{
 			socket.getOutputStream().write(data.getBytes());
@@ -130,6 +130,12 @@ public class Bluetooth
 					case BluetoothAdapter.STATE_TURNING_OFF:
 						if(state_listener != null) state_listener.onTurningOFF();
 						break;
+					case BluetoothAdapter.STATE_CONNECTING:
+						if(state_listener != null) state_listener.onConnecting();
+						break;
+					case BluetoothAdapter.STATE_CONNECTED:
+						if(state_listener != null) state_listener.onConnected();
+						break;
 				}
 			}
 		}
@@ -145,6 +151,8 @@ public class Bluetooth
 		void onTurnOFF();
 		void onTurningON();
 		void onTurningOFF();
+		void onConnecting();
+		void onConnected();
 	}
 	@SuppressLint("MissingPermission")
 	public void connect(final BluetoothDevice device){

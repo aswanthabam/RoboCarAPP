@@ -4,6 +4,7 @@ import android.speech.*;
 import android.content.*;
 import java.util.*;
 import android.os.*;
+import android.util.ArrayMap;
 import android.widget.*;
 import android.speech.tts.*;
 
@@ -15,8 +16,33 @@ public class VoiceControl
 	private Intent speechRecognizerIntent;
 	private TextToSpeech tts;
 	public static boolean IS_LISTENING = false;
+	private Map<String,String> dataSet = new ArrayMap<String,String>();
 	//private CheckBox micButton;
 	VoiceControl(AppCompatActivity a,Bluetooth b){
+		dataSet.put("move forward","F");
+		dataSet.put("forward","F");
+		dataSet.put("go forward","F");
+		dataSet.put("go straight","F");
+		dataSet.put("move backward","B");
+		dataSet.put("backward","B");
+		dataSet.put("go backward","B");
+		dataSet.put("go back","B");
+		dataSet.put("turn left","L");
+		dataSet.put("left","L");
+		dataSet.put("move left","L");
+		dataSet.put("go left","L");
+		dataSet.put("turn right","R");
+		dataSet.put("right","R");
+		dataSet.put("move right","R");
+		dataSet.put("go right","R");
+		dataSet.put("brake","S");
+		dataSet.put("break","S");
+		dataSet.put("stop","S");
+		dataSet.put("stop moving","S");
+		dataSet.put("obstacle mode","O");
+		dataSet.put("switch to obstacle mode","O");
+		dataSet.put("control mode","C");
+		dataSet.put("switch to control mode","C");
 		activity = a;
 		blue = b;
 		//micButton = btn;
@@ -37,8 +63,14 @@ public class VoiceControl
 			public void onResults(Bundle bundle) {
 				ArrayList<String> data = bundle.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
 				reco.stopListening();
-				speak(data.get(0));
-				if(IS_LISTENING)reco.startListening(speechRecognizerIntent);
+				for(String val : data){
+					if(dataSet.containsKey(val.toLowerCase())){
+						blue.send(dataSet.get(val.toLowerCase()));
+						speak(val,true);
+						break;
+					}
+				}
+				if(IS_LISTENING) reco.startListening(speechRecognizerIntent);
 				Toast.makeText(activity,""+data, Toast.LENGTH_SHORT).show();
 			}
 			@Override

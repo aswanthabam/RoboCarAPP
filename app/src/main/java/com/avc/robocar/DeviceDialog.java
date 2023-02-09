@@ -1,4 +1,5 @@
 package com.avc.robocar;
+import android.annotation.SuppressLint;
 import android.app.*;
 import android.os.*;
 import android.support.v7.app.*;
@@ -43,6 +44,7 @@ public class DeviceDialog extends Dialog
 			public void onSelected(BluetoothDevice device){
 				blue.pairDevice(device);
 				blue.connect(device);
+				dismiss();
 			}
 		});
 		find.setOnClickListener(new View.OnClickListener(){
@@ -51,6 +53,7 @@ public class DeviceDialog extends Dialog
 			}
 		});
 		blue.setOnDeviceDiscoverListener(new Bluetooth.OnDeviceDiscoveredListener(){
+			@SuppressLint("MissingPermission")
 			public void onDiscover(BluetoothDevice device){
 				devices.add(device);
 				deviceString.add(device.getName());

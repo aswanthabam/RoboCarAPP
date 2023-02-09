@@ -87,6 +87,16 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
 				textStatus.setText("Turning off bluetooth ...");
 				setStatus(R.color.orange);
 			}
+			public void onConnecting(){
+				state = -1;
+				textStatus.setText("Connecting ...");
+				setStatus(R.color.orange);
+			}
+			public void onConnected(){
+				state = -1;
+				textStatus.setText("Connected");
+				setStatus(R.color.green);
+			}
 		});
 		
 		status.setOnClickListener(new View.OnClickListener(){
@@ -173,7 +183,7 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
 				}
 				break;
 			case R.id.btn_brake:
-				bluetooth.send("S");
+				if(action == MotionEvent.ACTION_DOWN) bluetooth.send("S");
 				// else if(action == MotionEvent.ACTION_UP) bluetooth.send("X");
 				break;
 			case R.id.radio_control:
