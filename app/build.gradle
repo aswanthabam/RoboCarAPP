@@ -9,7 +9,8 @@ android {
     defaultConfig {
         applicationId "com.avc.robocar"
         minSdk 26
-        targetSdk 32
+        //noinspection ExpiredTargetSdkVersion
+        targetSdk 27
         versionCode 1
         versionName "1.0"
 

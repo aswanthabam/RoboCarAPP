@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
+    <uses-sdk android:minSdkVersion="26"
+        android:targetSdkVersion="27" />
     <!-- Request legacy Bluetooth permissions on older devices. -->
     <uses-permission android:name="android.permission.BLUETOOTH"
         android:maxSdkVersion="30" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"
         android:maxSdkVersion="30" />
-
-    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
-    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
     <uses-permission android:name="android.permission.RECORD_AUDIO"/>
     <uses-permission android:name="android.permission.INTERNET"/>
     <!-- Needed only if your app looks for Bluetooth devices.
@@ -20,7 +19,6 @@
     <!-- Needed only if your app makes the device discoverable to Bluetooth
         devices. -->
     <uses-permission android:name="android.permission.BLUETOOTH_ADVERTISE" />
-
 
     <!-- Needed only if your app communicates with already-paired Bluetooth
         devices. -->

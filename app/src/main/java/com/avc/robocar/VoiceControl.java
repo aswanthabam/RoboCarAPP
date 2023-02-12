@@ -22,11 +22,16 @@ public class VoiceControl
 		dataSet.put("move forward","F");
 		dataSet.put("forward","F");
 		dataSet.put("go forward","F");
+		dataSet.put("come forward","F");
 		dataSet.put("go straight","F");
+		dataSet.put("come straight","F");
 		dataSet.put("move backward","B");
+		dataSet.put("come backward","B");
+		dataSet.put("back","B");
 		dataSet.put("backward","B");
 		dataSet.put("go backward","B");
 		dataSet.put("go back","B");
+		dataSet.put("come back","B");
 		dataSet.put("turn left","L");
 		dataSet.put("left","L");
 		dataSet.put("move left","L");
