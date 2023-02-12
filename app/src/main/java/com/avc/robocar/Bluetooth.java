@@ -42,7 +42,11 @@ public class Bluetooth {
 		// Register for broadcasts when a device is discovered.
 		IntentFilter filter = new IntentFilter();
 		filter.addAction(BluetoothDevice.ACTION_FOUND);
+		filter.addAction(BluetoothDevice.ACTION_ACL_CONNECTED);
+		filter.addAction(BluetoothDevice.ACTION_ACL_DISCONNECTED);
+		filter.addAction(BluetoothDevice.ACTION_ACL_DISCONNECT_REQUESTED);
 		filter.addAction(BluetoothAdapter.ACTION_STATE_CHANGED);
+		filter.addAction(BluetoothAdapter.ACTION_CONNECTION_STATE_CHANGED);
 		a.registerReceiver(receiver, filter);
 	}
 
@@ -137,6 +141,10 @@ public class Bluetooth {
 					case BluetoothAdapter.STATE_TURNING_OFF:
 						if (state_listener != null) state_listener.onTurningOFF();
 						break;
+				}
+			} else if(BluetoothAdapter.ACTION_CONNECTION_STATE_CHANGED.equals(action)){
+				final int state = intent.getIntExtra(BluetoothAdapter.EXTRA_CONNECTION_STATE, BluetoothAdapter.ERROR);
+				switch (state) {
 					case BluetoothAdapter.STATE_CONNECTING:
 						if (state_listener != null) state_listener.onConnecting();
 						break;
@@ -144,6 +152,9 @@ public class Bluetooth {
 						if (state_listener != null) state_listener.onConnected();
 						break;
 				}
+			}
+			else if (BluetoothDevice.ACTION_ACL_CONNECTED.equals(action)) {
+				if (state_listener != null) state_listener.onConnected();
 			}
 		}
 	};
